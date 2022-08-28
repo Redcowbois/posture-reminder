@@ -1,9 +1,10 @@
 const fs = require("fs")
-const playSound = require("play-sound")
+const sound = require("sound-play")
 const prompt = require("prompt")
 
 let userSettings = {}
-
+let timer = 0
+sound.play("AHOY.mp3")
 console.log(`
 ===========================
 WELCOME TO POSTURE REMINDER
@@ -13,6 +14,7 @@ WELCOME TO POSTURE REMINDER
 menuStart()
 
 function menuStart() {
+    timer = 0 
     console.log("")
     console.log("Please select one of the followings: [1] Quick Start, [2] Manual Start, [3] Settings")
     prompt.start()
@@ -45,7 +47,10 @@ function manualStart() {
     ], function(err, result) {
         let userInterval = parseInt(result.interval)
         if (userInterval && userInterval>0 && userInterval <= 60) {
-            postureReminder()
+            console.log("")
+            console.log("Starting the timer...")
+            postureTimer(userInterval)
+            stopTimerPrompt()
         }
         else {
             console.log("")
@@ -56,6 +61,29 @@ function manualStart() {
 
 }
 
-function postureReminder() {
-    console.log(`1`)
+function stopTimerPrompt() {
+    console.log("")
+    console.log("If you wish to stop the reminders, type any character and press enter.")
+    prompt.start()
+    prompt.get([{name: "end", description: "Enter any character to stop"}], function(err, result) {
+        console.log("")
+        console.log("Stopping timer and bringing back the home page...")
+        setTimeout(menuStart,2000)
+    })
+
+}
+function postureTimer(maxTime) {
+    if (timer >= maxTime*60) {
+        return playSound()
+    } else {
+        if (timer%10 == 0) {
+            timer++
+        }
+        timer++
+        setTimeout(postureTimer, 1000, maxTime)
+    }
+}
+
+function playSound() {
+    playSound.play
 }

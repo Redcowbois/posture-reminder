@@ -89,19 +89,22 @@ function stopTimerPrompt() {
 }
 function postureTimer(maxTime) {
     if (timer >= maxTime*60) {
-        return playSound()
+        timer = 0 
+        open(`./sounds/random.mp3`)
+        console.timeEnd()
+        return postureTimer(maxTime)
     } else {
-        if (timer%15 == 0) {
+        if (timer%20 == 0 && timer > 0) {
             timer++
         }
         timer++
-        setTimeout(postureTimer, 1000, maxTime)
+        console.log(timer)
+        return setTimeout(postureTimer, 1000, maxTime)
     }
 }
 
-function playSound() {
-    open(`./sounds/random.mp3`)
-    console.timeEnd()
-    timer = 0 
-    postureTimer()
-}
+// function playSound() {
+//     open(`./sounds/random.mp3`)
+//     console.timeEnd()
+//     postureTimer(userInterval)
+// }

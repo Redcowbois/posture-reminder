@@ -1,10 +1,9 @@
 const fs = require("fs")
-const sound = require("sound-play")
+const open = require("open")
 const prompt = require("prompt")
 
 let userSettings = {}
 let timer = 0
-sound.play("AHOY.mp3")
 console.log(`
 ===========================
 WELCOME TO POSTURE REMINDER
@@ -22,8 +21,14 @@ function menuStart() {
         if (result.input == 1) {
             quickStart()
         }
-        if (result.input == 2) {
+        else if (result.input == 2) {
             manualStart()
+        }
+        else if (result.input == 3) {
+            settingsMenu()
+        }
+        else if (result.input == 4) {
+            devStart()
         }
         else {
             console.log("")
@@ -49,8 +54,18 @@ function manualStart() {
         if (userInterval && userInterval>0 && userInterval <= 60) {
             console.log("")
             console.log("Starting the timer...")
-            postureTimer(userInterval)
-            stopTimerPrompt()
+            setTimeout(() => {
+                console.log("")
+                console.log("")
+                console.log("")
+                console.log("Timer started!")
+                console.log("")
+                console.log("Make sure you have your sounds on to hear the reminder!")
+                console.log(timer)
+                postureTimer(userInterval)
+                console.time()
+            }, 1500)
+            setTimeout(stopTimerPrompt, 2500)
         }
         else {
             console.log("")
@@ -68,7 +83,7 @@ function stopTimerPrompt() {
     prompt.get([{name: "end", description: "Enter any character to stop"}], function(err, result) {
         console.log("")
         console.log("Stopping timer and bringing back the home page...")
-        setTimeout(menuStart,2000)
+        setTimeout(menuStart, 1000)
     })
 
 }
@@ -76,7 +91,7 @@ function postureTimer(maxTime) {
     if (timer >= maxTime*60) {
         return playSound()
     } else {
-        if (timer%10 == 0) {
+        if (timer%15 == 0) {
             timer++
         }
         timer++
@@ -85,5 +100,8 @@ function postureTimer(maxTime) {
 }
 
 function playSound() {
-    playSound.play
+    open(`./sounds/random.mp3`)
+    console.timeEnd()
+    timer = 0 
+    postureTimer()
 }

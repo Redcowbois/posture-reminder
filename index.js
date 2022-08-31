@@ -84,18 +84,10 @@ function manualStart() {
 
 }
 
-function stopPostureTimer() {
-    console.log("")
-    console.log("If you wish to stop the reminders, type any character and press enter.")
-    prompt.start()
-    prompt.get([{name: "end", description: "Enter any character to stop"}], function(err, result) {
-        console.log("")
-        console.log("Stopping timer and bringing back the home page...")
-        running = false 
-        setTimeout(menuStart, 1000)
-    })
-
+function quickStart() {
+    
 }
+
 function postureTimer(maxTime) {
     if (running) {
         if (timer >= maxTime*60) {
@@ -114,8 +106,15 @@ function postureTimer(maxTime) {
     }        
 }
 
-// function playSound() {
-//     open(`./sounds/random.mp3`)
-//     console.timeEnd()
-//     postureTimer(userInterval)
-// }
+function stopPostureTimer() {
+    console.log("")
+    console.log("If you wish to stop the reminders, type any character and press enter.")
+    prompt.start()
+    prompt.get([{name: "end", description: "Enter any character to stop"}], function(err, result) {
+        console.log("")
+        console.log("Stopping timer and bringing back the home page...")
+        running = false 
+        setTimeout(menuStart, 1000)
+    })
+
+}

@@ -1,0 +1,20 @@
+menuStart(): 
+    -starts the main selection menu 
+    -option 4 brings is a quick start (second prompt is in seconds)
+
+manualStart():
+    -id [2]
+    -asks the user to input an interval in minutes manually 
+    
+    TODO ask user to choose sound as well
+
+stopPostureTimer(): 
+    -starts prompt that ends the timer and brings user back to
+    the menu when anything is entered
+
+postureTimer():
+    -the posture timer, plays a sound when interval is reached
+    -will keep going infinitely 
+
+
+TODO - Delete this file after project is completely done 

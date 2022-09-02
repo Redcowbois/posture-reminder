@@ -5,6 +5,7 @@ const prompt = require("prompt")
 let userSettings = {}
 let timer = 0
 let running = true
+
 console.log(`
 ===========================
 WELCOME TO POSTURE REMINDER
@@ -85,14 +86,27 @@ function manualStart() {
 }
 
 function quickStart() {
-    
-}
+    let quickStartPromise = new Promise((resolve, reject) => {
+        fs.readFile("userSettings.JSON", "utf8", function(err, data) {
+            resolve(data)
+        })
+    })
+    quickStartPromise.then((data) => {
+        userSettings = JSON.parse(data) 
+        console.log("")
+        console.log(`The reminder interval has been set to ${userSettings.interval} minutes.`)
+        console.log(`The alarm sound has been set to ${userSettings.sound}.`)
+        console.log("")
+        console.log("Timer Started")
+        postureTimer(userSettings.interval/60)
+    })
+}    
 
 function postureTimer(maxTime) {
     if (running) {
         if (timer >= maxTime*60) {
             timer = 0 
-            open(`./sounds/random.mp3`)
+            open(`./sounds/ping.mp3`)
             console.timeEnd()
             return postureTimer(maxTime)
         } else {

@@ -1,2 +1,2 @@
-{"interval": 15,
-"sound": "./ping.mp3"}
+{"interval": 5,
+"sound": "./sounds/ping.mp3"}

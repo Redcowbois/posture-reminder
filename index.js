@@ -55,6 +55,26 @@ function menuStart() {
     })
 }
 
+function quickStart() {
+    let quickStartPromise = new Promise((resolve, reject) => {
+        fs.readFile("userSettings.JSON", "utf8", function(err, data) {
+            resolve(data)
+        })
+    })
+    quickStartPromise.then((data) => {
+        userSettings = JSON.parse(data) 
+        console.log("")
+        console.log(`The reminder interval has been set to ${userSettings.interval} minutes.`)
+        console.log(`The alarm sound has been set to ${userSettings.sound}.`)
+        console.log("")
+        console.log("You can change these settings in the settings menu.")
+        setTimeout(() => {
+            console.log("")
+            console.log("Timer Started")
+        postureTimer(userSettings.interval, userSettings.sound)},1500)
+    })
+}    
+
 function manualStart() {
     prompt.start()
     console.log("")
@@ -103,23 +123,6 @@ function manualStart() {
     })
 
 }
-
-function quickStart() {
-    let quickStartPromise = new Promise((resolve, reject) => {
-        fs.readFile("userSettings.JSON", "utf8", function(err, data) {
-            resolve(data)
-        })
-    })
-    quickStartPromise.then((data) => {
-        userSettings = JSON.parse(data) 
-        console.log("")
-        console.log(`The reminder interval has been set to ${userSettings.interval} minutes.`)
-        console.log(`The alarm sound has been set to ${userSettings.sound}.`)
-        console.log("")
-        console.log("Timer Started")
-        postureTimer(userSettings.interval, userSettings.sound)
-    })
-}    
 
 function postureTimer(maxTime, reminderSound) {
     if (running) {

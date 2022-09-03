@@ -178,13 +178,34 @@ function settingsMenu() {
                 }})}
                 break
             case "2":
-                console.log(2)
-                break
+                previewSounds()
+                function previewSounds() {
+                    console.log("")
+                    console.log("Please select a sound to preview.")
+                    console.table(allSounds)
+                    console.log(`Enter "exit" if you wish to return to the settings menu.`)
+                    prompt.get(["sound"], (err, result) => {
+                        if (result["sound"] == "exit") {
+                            console.log("")
+                            return settingsMenu()
+                        }
+                        else if (allSounds[result["sound"]]) {
+                            open(`./sounds/${allSounds[result["sound"]]}.mp3`)
+                            return previewSounds()
+                        }
+                        else {
+                            return previewSounds()
+                        }
+                    })
+                }
+                break    
             case "3":
                 console.log("")
                 menuStart()
                 break
             default: 
+                console.log("")
+                console.log("Please select a valid option.")
                 settingsMenu()
                 break
         }

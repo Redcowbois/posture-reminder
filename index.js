@@ -132,7 +132,50 @@ function settingsMenu() {
     prompt.get(["input"], function(err, result) {
         switch(result["input"]) {
             case "1":
-                console.log(1)
+                settingsIntervalPrompt()
+                function settingsIntervalPrompt() {
+                console.log("")
+                console.log("Enter the time interval (in minutes) you want to have between each reminder.")
+                console.log("This interval must be between 1 and 60 minutes.")
+                prompt.get([
+                    {
+                        name: "interval",
+                        description: "Reminder Interval (minutes)",
+                        required: "true"
+                    }
+                ], function(err, result) {
+                    if (parseInt(result.interval) > 0 && parseInt(result.interval) <= 60) {
+                        console.log(parseInt(result.interval))
+                        settingsSoundPrompt(parseInt(result.interval))
+                        function settingsSoundPrompt(interval) {
+                            console.table(allSounds)
+                            console.log("Please select a reminder sound, you can preview these in the settings menu.")
+                            prompt.get(["sound id"], function(err, result) {
+                                 if (allSounds[result["sound id"]]) {
+                                    let userSettingsObject = {
+                                        "interval": interval,
+                                        "sound": `./sounds/${allSounds[result["sound id"]]}.mp3`
+                                    }
+                                    fs.writeFile("./userSettings.JSON", JSON.stringify(userSettingsObject), () => {
+                                        console.log("")
+                                        console.log(`Interval now set to ${interval} minutes.`)
+                                        console.log(`Sound now set to ${allSounds[result["sound id"]]}.mp3`)
+                                        console.log("")
+                                        console.log("Returning to menu...")
+                                        console.log("")
+                                        setTimeout(menuStart, 1500)
+                                    })
+                                    } else {
+                                        console.log("Please input a valid sound id.")
+                                        settingsSoundPrompt()
+                                    }
+                        } 
+                )}
+                } else {
+                    console.log("")
+                    console.log("Please select a valid interval.")
+                    settingsIntervalPrompt()
+                }})}
                 break
             case "2":
                 console.log(2)

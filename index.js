@@ -124,6 +124,101 @@ function manualStart() {
 
 }
 
+<<<<<<< HEAD
+
+
+function settingsMenu() {
+    console.log("")
+    console.log("Please choose one of the following:")
+    console.log("")
+    console.log("  [1] Change quick start settings")
+    console.log("  [2] Preview sound effects")
+    console.log("  [3] Return to main menu")
+    console.log("")
+    prompt.get(["input"], function(err, result) {
+        switch(result["input"]) {
+            case "1":
+                settingsIntervalPrompt()
+                function settingsIntervalPrompt() {
+                console.log("")
+                console.log("Enter the time interval (in minutes) you want to have between each reminder.")
+                console.log("This interval must be between 1 and 60 minutes.")
+                prompt.get([
+                    {
+                        name: "interval",
+                        description: "Reminder Interval (minutes)",
+                        required: "true"
+                    }
+                ], function(err, result) {
+                    if (parseInt(result.interval) > 0 && parseInt(result.interval) <= 60) {
+                        console.log(parseInt(result.interval))
+                        settingsSoundPrompt(parseInt(result.interval))
+                        function settingsSoundPrompt(interval) {
+                            console.table(allSounds)
+                            console.log("Please select a reminder sound, you can preview these in the settings menu.")
+                            prompt.get(["sound id"], function(err, result) {
+                                 if (allSounds[result["sound id"]]) {
+                                    let userSettingsObject = {
+                                        "interval": interval,
+                                        "sound": `./sounds/${allSounds[result["sound id"]]}.mp3`
+                                    }
+                                    fs.writeFile("./userSettings.JSON", JSON.stringify(userSettingsObject), () => {
+                                        console.log("")
+                                        console.log(`Interval now set to ${interval} minutes.`)
+                                        console.log(`Sound now set to ${allSounds[result["sound id"]]}.mp3`)
+                                        console.log("")
+                                        console.log("Returning to menu...")
+                                        console.log("")
+                                        setTimeout(menuStart, 1500)
+                                    })
+                                    } else {
+                                        console.log("Please input a valid sound id.")
+                                        settingsSoundPrompt()
+                                    }
+                        } 
+                )}
+                } else {
+                    console.log("")
+                    console.log("Please select a valid interval.")
+                    settingsIntervalPrompt()
+                }})}
+                break
+            case "2":
+                previewSounds()
+                function previewSounds() {
+                    console.log("")
+                    console.log("Please select a sound to preview.")
+                    console.table(allSounds)
+                    console.log(`Enter "exit" if you wish to return to the settings menu.`)
+                    prompt.get(["sound"], (err, result) => {
+                        if (result["sound"] == "exit") {
+                            console.log("")
+                            return settingsMenu()
+                        }
+                        else if (allSounds[result["sound"]]) {
+                            open(`./sounds/${allSounds[result["sound"]]}.mp3`)
+                            return previewSounds()
+                        }
+                        else {
+                            return previewSounds()
+                        }
+                    })
+                }
+                break    
+            case "3":
+                console.log("")
+                menuStart()
+                break
+            default: 
+                console.log("")
+                console.log("Please select a valid option.")
+                settingsMenu()
+                break
+        }
+    })
+}
+
+>>>>>>> settings
 function postureTimer(maxTime, reminderSound) {
     if (running) {
         if (timer >= maxTime*60) {

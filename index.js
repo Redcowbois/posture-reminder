@@ -124,9 +124,6 @@ function manualStart() {
 
 }
 
-<<<<<<< HEAD
-
-
 function settingsMenu() {
     console.log("")
     console.log("Please choose one of the following:")
@@ -218,7 +215,6 @@ function settingsMenu() {
     })
 }
 
->>>>>>> settings
 function postureTimer(maxTime, reminderSound) {
     if (running) {
         if (timer >= maxTime*60) {

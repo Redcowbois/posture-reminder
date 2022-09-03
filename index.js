@@ -121,6 +121,10 @@ function quickStart() {
     })
 }    
 
+function settingsMenu() {
+    console.log("uwu")
+}
+
 function postureTimer(maxTime, reminderSound) {
     if (running) {
         if (timer >= maxTime*60) {

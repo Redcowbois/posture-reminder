@@ -2,6 +2,11 @@ menuStart():
     -starts the main selection menu 
     -option 4 brings is a quick start (second prompt is in seconds)
 
+quickStart(): 
+    -id [1]
+    - opens userSettings.JSON and takes values
+    - starts timer 
+
 manualStart():
     -id [2]
     -asks the user to input an interval in minutes manually 

@@ -5,6 +5,14 @@ const prompt = require("prompt")
 let userSettings = {}
 let timer = 0
 let running = true
+let allSounds = {
+    1: "ahoy",
+    2: "onichan",
+    3: "ping",
+    4: "turnedon",
+    5: "wise",
+    6: "yooo"
+}
 
 console.log(`
 ===========================
@@ -33,9 +41,9 @@ function menuStart() {
         }
         else if (result.input == 4) {
             prompt.start()
-            prompt.get("input", function(err,result) {
-                postureTimer(result.input/60)
-                console.time()
+            prompt.get(["time", "sound"], function(err,result) {
+                postureTimer(result.time/60, `./sounds/${result.sound}.mp3`)
+                console.time("time")
                 stopPostureTimer()
             })
         }
@@ -61,20 +69,31 @@ function manualStart() {
     ], function(err, result) {
         let userInterval = parseInt(result.interval)
         if (userInterval && userInterval>0 && userInterval <= 60) {
-            console.log("")
-            console.log("Starting the timer...")
-            setTimeout(() => {
-                console.log("")
-                console.log("")
-                console.log("")
-                console.log("Timer started!")
-                console.log("")
-                console.log("Make sure you have your sounds on to hear the reminder!")
-                console.log(timer)
-                postureTimer(userInterval)
-                console.time()
-            }, 1500)
-            setTimeout(stopPostureTimer, 2500)
+            soundPrompt()
+            function soundPrompt()
+            {console.table(allSounds)
+            console.log("Please select a reminder sound, you can preview these in the settings menu.")
+            prompt.get(["sound id"], function(err, result) {
+                if (allSounds[result["sound id"]]) {
+                    console.log("")
+                    console.log("Starting the timer...")
+                    setTimeout(() => {
+                    console.log("")
+                    console.log("")
+                    console.log("")
+                    console.log("Timer started!")
+                    console.log("")
+                    console.log("Make sure you have your sounds on to hear the reminder!")
+                    console.log(timer)
+                    postureTimer(userInterval, `./sounds/${allSounds[result["sound id"]]}.mp3`)
+                    console.time("time")
+                    }, 1500)
+                    setTimeout(stopPostureTimer, 2500)
+                } else {
+                    console.log("Please input a valid sound id.")
+                    soundPrompt()
+                }}
+    )}
         }
         else {
             console.log("")
@@ -98,24 +117,24 @@ function quickStart() {
         console.log(`The alarm sound has been set to ${userSettings.sound}.`)
         console.log("")
         console.log("Timer Started")
-        postureTimer(userSettings.interval/60)
+        postureTimer(userSettings.interval, userSettings.sound)
     })
 }    
 
-function postureTimer(maxTime) {
+function postureTimer(maxTime, reminderSound) {
     if (running) {
         if (timer >= maxTime*60) {
             timer = 0 
-            open(`./sounds/ping.mp3`)
-            console.timeEnd()
-            return postureTimer(maxTime)
+            open(reminderSound)
+            console.timeEnd("time")
+            return postureTimer(maxTime, reminderSound)
         } else {
             if (timer%20 == 0 && timer > 0) {
                 timer++
             }
             timer++
             console.log(timer)
-            return setTimeout(postureTimer, 1000, maxTime)
+            return setTimeout(postureTimer, 1000, maxTime, reminderSound)
         }
     }        
 }

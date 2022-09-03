@@ -122,7 +122,30 @@ function quickStart() {
 }    
 
 function settingsMenu() {
-    console.log("uwu")
+    console.log("")
+    console.log("Please choose one of the following:")
+    console.log("")
+    console.log("  [1] Change quick start settings")
+    console.log("  [2] Preview sound effects")
+    console.log("  [3] Return to main menu")
+    console.log("")
+    prompt.get(["input"], function(err, result) {
+        switch(result["input"]) {
+            case "1":
+                console.log(1)
+                break
+            case "2":
+                console.log(2)
+                break
+            case "3":
+                console.log("")
+                menuStart()
+                break
+            default: 
+                settingsMenu()
+                break
+        }
+    })
 }
 
 function postureTimer(maxTime, reminderSound) {

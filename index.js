@@ -76,6 +76,7 @@ function quickStart() {
       console.log("Timer Started");
       postureTimer(userSettings.interval, userSettings.sound);
     }, 1500);
+    setTimeout(stopPostureTimer, 2500)
   });
 }
 
